@@ -1,0 +1,10 @@
+.ipynb_checkpoints/
+venv/
+best_model.*
+checkpoint
+database.sqlite
+hashes.txt
+numberbatch-en-19.08.txt.gz
+report.txt
+summarize*Copy*
+Reviews.csv
