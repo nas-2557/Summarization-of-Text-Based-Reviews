@@ -1,57 +1,47 @@
 # Summarization-of-Text-Based-Reviews
 ## Overview
 
-The model uses a sequence-to-sequence architecture built with a bidirectional LSTM encoder and an attention-based decoder. The encoder captures the contextual meaning of the input reviews, while the decoder generates relevant summaries using Bahdanau attention. This implementation is trained from scratch and demonstrates the challenges of long-sequence modeling in natural language processing.
+The architecture follows a sequence-to-sequence approach using a bidirectional LSTM encoder and an attention-based decoder (Bahdanau attention). The model is trained from scratch on preprocessed review-summary pairs from the dataset.
 
 ## Features
 
-- Encoder-decoder architecture with two-layer bidirectional LSTM
-- Bahdanau (additive) attention mechanism
-- Preprocessing pipeline for handling long, noisy user-generated text
-- Tokenization, padding, and sequence trimming to manage memory usage
-- Training/validation split with loss tracking and early stopping
-- Text cleaning and normalization tailored for Amazon review format
+- Custom encoder-decoder architecture using TensorFlow
+- Bahdanau attention mechanism for context-aware decoding
+- Text preprocessing pipeline with stopword removal, lemmatization, and cleaning
+- Review tokenization, padding, and dynamic sequence handling
+- Inference pipeline to generate summaries for new or random reviews
 
 ## Technologies
 
 - Python
-- TensorFlow / Keras
+- TensorFlow
 - NumPy
 - NLTK
-- Google Colab (for training)
+- Google Colab
 
 ## Dataset
 
-The model is trained on the [Amazon Fine Food Reviews dataset](https://www.kaggle.com/datasets/snap/amazon-fine-food-reviews), which contains over 500,000 reviews and summaries.
+The model uses the [Amazon Fine Food Reviews](https://www.kaggle.com/datasets/snap/amazon-fine-food-reviews) dataset, consisting of over 500,000 user-written product reviews. Each data point includes a long-form review and a human-written summary.
 
-### Preprocessing Steps:
-- Removal of HTML tags, special characters, and stopwords
-- Lowercasing and lemmatization
-- Sentence length restriction (max input length: 80 tokens; summary: 10–15 tokens)
+The dataset was cleaned to remove stopwords, punctuation, and irregular symbols. Texts were filtered by length to fit model input constraints.
 
 ## Model Architecture
 
 - **Encoder**: 2-layer Bidirectional LSTM
 - **Decoder**: 2-layer LSTM with Bahdanau attention
-- **Vocabulary size**: Limited to top 30,000 most frequent tokens
-- **Embedding dimension**: 300
-- **Optimizer**: Adam
+- **Embedding**: Learned embeddings with vocabulary truncation
 - **Loss**: Sparse categorical crossentropy
+- **Optimizer**: Adam
+- **Hyperparameters**: 100 epochs, batch size 64, learning rate 0.005
 
 ## Results
 
-The model was trained for 50 epochs with early stopping. Evaluation on a held-out validation set produced the following:
+The model was successfully trained and is capable of generating summaries from unseen reviews. While formal evaluation metrics (e.g., ROUGE) are not yet implemented, qualitative testing using random review inputs shows the model can extract key sentiment and content effectively in many cases.
 
-- **Validation Loss**: ~1.96
-- **ROUGE-L Score**: 0.52
-- **Sample Summary Output**:
-  - **Input**: "The product arrived quickly and the packaging was excellent. However, the flavor was bland and I probably won’t order it again."
-  - **Generated Summary**: "Quick delivery, bland taste."
-
-The summaries generally captured the core sentiment and key information, though some outputs occasionally missed context in longer reviews.
+Further evaluation and output samples will be added in future versions.
 
 ## Limitations
 
-- The model struggles with very long inputs or reviews containing multiple conflicting sentiments.
-- Generated summaries may not always be grammatically perfect or faithful to the input.
-- Performance can be further improved using pre-trained transformers like BART or T5.
+- The model does not currently include automated metrics for evaluation.
+- Some outputs may lack fluency or miss fine-grained context.
+- Results could be improved with pre-trained embeddings or transformer-based models.
